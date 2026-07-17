@@ -1,0 +1,27 @@
+version: '3.8'
+
+# Перечень volume
+volumes:
+  pg_data:
+
+# Перечень контейнеров
+services:
+  # 1. Контейнер БД
+  db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  # 2. Контейнер с бэкендом
+  backend:
+    build: ./ # Так как файл лежит в папке backend, контекст сборки бэкенда — это текущая папка (./)
+    env_file: .env
+    depends_on:
+      - db
+
+  # 3. Контейнер с фронтендом
+  frontend:
+    build:
+      context: ../frontend # Поднимаемся на уровень выше и заходим в frontend
+      dockerfile: Dockerfile
