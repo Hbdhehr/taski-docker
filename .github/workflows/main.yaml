@@ -176,7 +176,6 @@ jobs:
             # Выполняем миграции
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
 
-            # Собираем статические файлы
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --noinput
 
             # Копируем статику в общий volume
